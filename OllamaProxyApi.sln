@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36203.30 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OllamaProxyApi", "OllamaProxyApi\OllamaProxyApi.csproj", "{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF9EF938-BD0D-40CD-83BC-6943405C62DC}
+	EndGlobalSection
+EndGlobal

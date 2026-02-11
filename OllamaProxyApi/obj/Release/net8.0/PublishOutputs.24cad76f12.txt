@@ -1,0 +1,8 @@
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\OllamaProxyApi.exe
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\appsettings.json
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\OllamaProxyApi.dll
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\OllamaProxyApi.deps.json
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\OllamaProxyApi.runtimeconfig.json
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\OllamaProxyApi.pdb
+C:\Users\user\source\repos\OllamaProxyApi\OllamaProxyApi\obj\Release\net8.0\PubTmp\Out\Newtonsoft.Json.dll

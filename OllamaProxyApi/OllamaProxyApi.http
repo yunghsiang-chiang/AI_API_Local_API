@@ -1,0 +1,6 @@
+@OllamaProxyApi_HostAddress = http://localhost:5165
+
+GET {{OllamaProxyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
