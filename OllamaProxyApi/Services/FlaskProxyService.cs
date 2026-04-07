@@ -22,19 +22,24 @@ namespace OllamaProxyApi.Services
 
         private string BaseUrl => _configuration["FlaskApi:BaseUrl"]?.TrimEnd('/') ?? "http://localhost:5000";
 
-        private string AdminApiKey =>
+        private string ConfiguredAdminApiKey =>
             _configuration["FlaskApi:AdminApiKey"] ??
             Environment.GetEnvironmentVariable("ADMIN_API_KEY") ??
             string.Empty;
 
-        private async Task<(HttpStatusCode StatusCode, string Body)> SendAsync(HttpRequestMessage request, bool requireAdminApiKey = false)
+        private async Task<(HttpStatusCode StatusCode, string Body)> SendAsync(
+            HttpRequestMessage request,
+            bool requireAdminApiKey = false,
+            string? adminApiKey = null)
         {
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            if (requireAdminApiKey && !string.IsNullOrWhiteSpace(AdminApiKey))
+            var apiKeyToUse = string.IsNullOrWhiteSpace(adminApiKey) ? ConfiguredAdminApiKey : adminApiKey;
+
+            if (requireAdminApiKey && !string.IsNullOrWhiteSpace(apiKeyToUse))
             {
-                request.Headers.TryAddWithoutValidation(AdminApiKeyHeader, AdminApiKey);
+                request.Headers.TryAddWithoutValidation(AdminApiKeyHeader, apiKeyToUse);
             }
 
             using var response = await _httpClient.SendAsync(request);
@@ -74,37 +79,37 @@ namespace OllamaProxyApi.Services
             return await SendAsync(request);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> GetAdminListAsync(int page, int pageSize)
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetAdminListAsync(int page, int pageSize, string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/list?page={page}&pageSize={pageSize}");
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> DeleteParagraphAsync(int id)
+        public async Task<(HttpStatusCode StatusCode, string Body)> DeleteParagraphAsync(int id, string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Delete, $"{BaseUrl}/admin/delete/{id}");
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> GetSourceFilesAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetSourceFilesAsync(string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/source-files");
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> GetPendingModificationsAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetPendingModificationsAsync(string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/pending-modifications");
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> GetReloadNeededStatusAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetReloadNeededStatusAsync(string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/reload-needed");
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> UpdateParagraphAsync(int id, string newText)
+        public async Task<(HttpStatusCode StatusCode, string Body)> UpdateParagraphAsync(int id, string newText, string? adminApiKey = null)
         {
             var payload = new { text = newText };
             var json = JsonConvert.SerializeObject(payload);
@@ -113,13 +118,13 @@ namespace OllamaProxyApi.Services
                 Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json"),
             };
 
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
-        public async Task<(HttpStatusCode StatusCode, string Body)> ReloadAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> ReloadAsync(string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, $"{BaseUrl}/admin/reload");
-            return await SendAsync(request, requireAdminApiKey: true);
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
     }
 }

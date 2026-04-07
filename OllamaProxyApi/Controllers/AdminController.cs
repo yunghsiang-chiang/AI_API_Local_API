@@ -15,6 +15,11 @@ namespace OllamaProxyApi.Controllers
             _flaskService = flaskService;
         }
 
+        private string? AdminApiKeyFromRequest =>
+            Request.Headers.TryGetValue("X-Admin-API-Key", out var headerValue)
+                ? headerValue.ToString()
+                : null;
+
         private ContentResult ProxyJson(System.Net.HttpStatusCode statusCode, string body)
             => new()
             {
@@ -26,7 +31,7 @@ namespace OllamaProxyApi.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
         {
-            var result = await _flaskService.GetAdminListAsync(page, pageSize);
+            var result = await _flaskService.GetAdminListAsync(page, pageSize, AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
@@ -45,7 +50,7 @@ namespace OllamaProxyApi.Controllers
         [HttpGet("paragraphs")]
         public async Task<IActionResult> GetParagraphs([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
         {
-            var result = await _flaskService.GetAdminListAsync(page, pageSize);
+            var result = await _flaskService.GetAdminListAsync(page, pageSize, AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
@@ -59,42 +64,42 @@ namespace OllamaProxyApi.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _flaskService.DeleteParagraphAsync(id);
+            var result = await _flaskService.DeleteParagraphAsync(id, AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
         [HttpGet("source-files")]
         public async Task<IActionResult> GetSourceFiles()
         {
-            var result = await _flaskService.GetSourceFilesAsync();
+            var result = await _flaskService.GetSourceFilesAsync(AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
         [HttpGet("pending-modifications")]
         public async Task<IActionResult> GetPendingModifications()
         {
-            var result = await _flaskService.GetPendingModificationsAsync();
+            var result = await _flaskService.GetPendingModificationsAsync(AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
         [HttpGet("reload-needed")]
         public async Task<IActionResult> GetReloadNeeded()
         {
-            var result = await _flaskService.GetReloadNeededStatusAsync();
+            var result = await _flaskService.GetReloadNeededStatusAsync(AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateParagraph(int id, [FromBody] UpdateRequest request)
         {
-            var result = await _flaskService.UpdateParagraphAsync(id, request.Text);
+            var result = await _flaskService.UpdateParagraphAsync(id, request.Text, AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
 
         [HttpPost("reload")]
         public async Task<IActionResult> Reload()
         {
-            var result = await _flaskService.ReloadAsync();
+            var result = await _flaskService.ReloadAsync(AdminApiKeyFromRequest);
             return ProxyJson(result.StatusCode, result.Body);
         }
     }
