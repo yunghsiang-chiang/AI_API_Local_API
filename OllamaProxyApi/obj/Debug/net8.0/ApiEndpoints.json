@@ -155,6 +155,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OllamaProxyApi.Controllers.HochiController",
+    "Method": "GetCourseBanners",
+    "RelativePath": "api/hochi/course-banners",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OllamaProxyApi.Controllers.HochiController",
+    "Method": "GetCourseBannersLite",
+    "RelativePath": "api/hochi/course-banners-lite",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OllamaProxyApi.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OllamaProxyApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0a72f7694f6a9ec579b5cca6bbafabd3eb21ffd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cdc3b1f4ced12f151cb5584d41a5b2567a7b9eea")]
 [assembly: System.Reflection.AssemblyProductAttribute("OllamaProxyApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OllamaProxyApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
