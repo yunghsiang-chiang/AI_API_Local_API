@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 using OllamaProxyApi.Models;
 
 namespace OllamaProxyApi.Services
@@ -6,119 +8,118 @@ namespace OllamaProxyApi.Services
     public class FlaskProxyService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "http://localhost:5000";
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<FlaskProxyService> _logger;
         private const int MAX_TOP_K = 10;
+        private const string AdminApiKeyHeader = "X-Admin-API-Key";
 
-        public FlaskProxyService(HttpClient httpClient)
+        public FlaskProxyService(HttpClient httpClient, IConfiguration configuration, ILogger<FlaskProxyService> logger)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
+            _logger = logger;
         }
 
-        public async Task<HealthStatus> GetHealthAsync()
-        {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/health");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
+        private string BaseUrl => _configuration["FlaskApi:BaseUrl"]?.TrimEnd('/') ?? "http://localhost:5000";
 
-            return JsonConvert.DeserializeObject<HealthStatus>(content);
+        private string AdminApiKey =>
+            _configuration["FlaskApi:AdminApiKey"] ??
+            Environment.GetEnvironmentVariable("ADMIN_API_KEY") ??
+            string.Empty;
+
+        private async Task<(HttpStatusCode StatusCode, string Body)> SendAsync(HttpRequestMessage request, bool requireAdminApiKey = false)
+        {
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            if (requireAdminApiKey && !string.IsNullOrWhiteSpace(AdminApiKey))
+            {
+                request.Headers.TryAddWithoutValidation(AdminApiKeyHeader, AdminApiKey);
+            }
+
+            using var response = await _httpClient.SendAsync(request);
+            var body = await response.Content.ReadAsStringAsync();
+            return (response.StatusCode, body);
         }
 
-
-
-        public async Task<ParagraphPageResult> GetParagraphPageAsync(int page, int pageSize)
+        public async Task<HealthStatus?> GetHealthAsync()
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/admin/list?page={page}&pageSize={pageSize}");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ParagraphPageResult>(content);
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/health");
+            var (statusCode, body) = await SendAsync(request);
+            if (statusCode != HttpStatusCode.OK)
+            {
+                _logger.LogWarning("Flask health check returned {StatusCode}: {Body}", (int)statusCode, body);
+                return null;
+            }
+
+            return JsonConvert.DeserializeObject<HealthStatus>(body);
         }
 
-
-        public async Task<dynamic> AskAsync(string question, int topK = 5)
+        public async Task<(HttpStatusCode StatusCode, string Body)> AskAsync(string question, int topK = 5)
         {
-            topK = Math.Min(topK, MAX_TOP_K);
+            topK = Math.Clamp(topK, 1, MAX_TOP_K);
 
             var postData = new
             {
-                question = question,
-                top_k = topK // <-- 確保這裡是 "top_k" 而不是 "topK"
+                question,
+                top_k = topK,
             };
 
             var json = JsonConvert.SerializeObject(postData);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync($"{_baseUrl}/ask", content);
-
-            var result = await response.Content.ReadAsStringAsync();
-            if (!response.IsSuccessStatusCode)
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{BaseUrl}/ask")
             {
-                Console.WriteLine($"[ERROR] HTTP {(int)response.StatusCode}: {response.ReasonPhrase}");
-            }
-            Console.WriteLine("[FlaskProxy Response Raw] " + result);
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json"),
+            };
 
-
-            return result; // 回傳 JSON 原始字串試看看
-
+            return await SendAsync(request);
         }
 
-
-        public async Task<string> GetAdminListAsync(int page, int pageSize)
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetAdminListAsync(int page, int pageSize)
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/admin/list?page={page}&pageSize={pageSize}");
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsStringAsync();
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/list?page={page}&pageSize={pageSize}");
+            return await SendAsync(request, requireAdminApiKey: true);
         }
 
-        public async Task<string> DeleteParagraphAsync(int id)
+        public async Task<(HttpStatusCode StatusCode, string Body)> DeleteParagraphAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"{_baseUrl}/admin/delete/{id}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            using var request = new HttpRequestMessage(HttpMethod.Delete, $"{BaseUrl}/admin/delete/{id}");
+            return await SendAsync(request, requireAdminApiKey: true);
         }
 
-        public async Task<string> GetSourceFilesAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetSourceFilesAsync()
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/admin/source-files");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/source-files");
+            return await SendAsync(request, requireAdminApiKey: true);
         }
 
-        public async Task<string> GetPendingModificationsAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetPendingModificationsAsync()
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/admin/pending-modifications");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/pending-modifications");
+            return await SendAsync(request, requireAdminApiKey: true);
         }
 
-        public async Task<string> GetReloadNeededStatusAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetReloadNeededStatusAsync()
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/admin/reload-needed");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/reload-needed");
+            return await SendAsync(request, requireAdminApiKey: true);
         }
 
-        public async Task<string> UpdateParagraphAsync(int id, string newText)
+        public async Task<(HttpStatusCode StatusCode, string Body)> UpdateParagraphAsync(int id, string newText)
         {
             var payload = new { text = newText };
             var json = JsonConvert.SerializeObject(payload);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PutAsync($"{_baseUrl}/admin/update/{id}", content);
-            if (!response.IsSuccessStatusCode)
+            using var request = new HttpRequestMessage(HttpMethod.Put, $"{BaseUrl}/admin/update/{id}")
             {
-                var errorMsg = await response.Content.ReadAsStringAsync();
-                throw new Exception($"更新失敗: {response.StatusCode} - {errorMsg}");
-            }
-            return await response.Content.ReadAsStringAsync();
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json"),
+            };
+
+            return await SendAsync(request, requireAdminApiKey: true);
         }
 
-        public async Task<string> ReloadAsync()
+        public async Task<(HttpStatusCode StatusCode, string Body)> ReloadAsync()
         {
-            var response = await _httpClient.PostAsync($"{_baseUrl}/admin/reload", null);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{BaseUrl}/admin/reload");
+            return await SendAsync(request, requireAdminApiKey: true);
         }
-
     }
 }
