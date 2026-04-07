@@ -1,12 +1,86 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|c:\\users\\user\\source\\repos\\ollamaproxyapi\\ollamaproxyapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|solutionrelative:ollamaproxyapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|c:\\users\\user\\source\\repos\\ollamaproxyapi\\ollamaproxyapi\\controllers\\hochicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|solutionrelative:ollamaproxyapi\\controllers\\hochicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|c:\\users\\user\\source\\repos\\ollamaproxyapi\\ollamaproxyapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|solutionrelative:ollamaproxyapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|c:\\users\\user\\source\\repos\\ollamaproxyapi\\ollamaproxyapi\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{929B91F1-DE60-4D9D-A5F8-FEF08D634A05}|OllamaProxyApi\\OllamaProxyApi.csproj|solutionrelative:ollamaproxyapi\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HochiController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Controllers\\HochiController.cs",
+              "RelativeDocumentMoniker": "OllamaProxyApi\\Controllers\\HochiController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Controllers\\HochiController.cs",
+              "RelativeToolTip": "OllamaProxyApi\\Controllers\\HochiController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAADwvxAAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T02:50:56.251Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "WeatherForecastController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Controllers\\WeatherForecastController.cs",
+              "RelativeDocumentMoniker": "OllamaProxyApi\\Controllers\\WeatherForecastController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Controllers\\WeatherForecastController.cs",
+              "RelativeToolTip": "OllamaProxyApi\\Controllers\\WeatherForecastController.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAADwvxkAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T02:48:55.69Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "OllamaProxyApi\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "OllamaProxyApi\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAxwGgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T02:48:46.386Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Program.cs",
+              "RelativeDocumentMoniker": "OllamaProxyApi\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\OllamaProxyApi\\OllamaProxyApi\\Program.cs",
+              "RelativeToolTip": "OllamaProxyApi\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-12T06:18:42.846Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

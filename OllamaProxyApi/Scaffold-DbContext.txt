@@ -7,3 +7,9 @@ Scaffold-DbContext "Server=192.168.11.51;Database=attendance;User ID=hochi_root;
 Scaffold-DbContext "Server=192.168.11.51;Database=HochiSystem;User ID=GESql;Password=hochi_Taoyuan;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -NoOnConfiguring -UseDatabaseNames -NoPluralize -Force
 
 Scaffold-DbContext "Server=192.168.11.51;Database=HochiReports;User ID=GESql;Password=hochi_Taoyuan;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -NoOnConfiguring -UseDatabaseNames -NoPluralize -Force
+
+
+dotnet ef dbcontext scaffold "Server=192.168.11.51;Database=HochiSystem;User ID=GESql;Password=hochi_Taoyuan;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer   --output-dir Models   --no-onconfiguring   --use-database-names   --no-pluralize   --force
+
+
+dotnet ef dbcontext scaffold "Server=internal.hochi.org.tw;Database=HochiSystem;User ID=GESql;Password=hochi_Taoyuan;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer   --output-dir Models   --no-onconfiguring   --use-database-names   --no-pluralize   --force

@@ -7,12 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddHttpClient(); // ✅ 加這行（給 proxy 用）
+
 // ✅ 加入 CORS 設定（允許跨網域請求）
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://internal.hochi.org.tw:8083", "https://dict.hochi.org.tw:5263", "https://editor-bot.no8.io")
+        policy.WithOrigins("https://internal.hochi.org.tw:8083", "https://dict.hochi.org.tw:5263", "https://editor-bot.no8.io")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
