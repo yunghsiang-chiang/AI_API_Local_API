@@ -85,6 +85,13 @@ namespace OllamaProxyApi.Services
             return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetParagraphsByFileAsync(string fileName)
+        {
+            var encodedFileName = Uri.EscapeDataString(fileName);
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/paragraphs-by-file?file_name={encodedFileName}");
+            return await SendAsync(request);
+        }
+
         public async Task<(HttpStatusCode StatusCode, string Body)> DeleteParagraphAsync(int id, string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Delete, $"{BaseUrl}/admin/delete/{id}");

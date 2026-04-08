@@ -54,6 +54,18 @@ namespace OllamaProxyApi.Controllers
             return ProxyJson(result.StatusCode, result.Body);
         }
 
+        [HttpGet("paragraphs-by-file")]
+        public async Task<IActionResult> GetParagraphsByFile([FromQuery] string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return BadRequest(new { code = "BAD_REQUEST", message = "請提供 fileName 參數" });
+            }
+
+            var result = await _flaskService.GetParagraphsByFileAsync(fileName);
+            return ProxyJson(result.StatusCode, result.Body);
+        }
+
         [HttpPost("ask")]
         public async Task<IActionResult> Ask([FromBody] AskRequest req)
         {
