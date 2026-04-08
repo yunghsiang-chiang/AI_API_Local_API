@@ -87,6 +87,27 @@ namespace OllamaProxyApi.Controllers
             return ProxyJson(result.StatusCode, result.Body);
         }
 
+        [HttpGet("sampled-files")]
+        public async Task<IActionResult> GetSampledFiles()
+        {
+            var result = await _flaskService.GetSampledFilesAsync(AdminApiKeyFromRequest);
+            return ProxyJson(result.StatusCode, result.Body);
+        }
+
+        [HttpPost("sampled-files")]
+        public async Task<IActionResult> AddSampledFile([FromBody] SampledFileRequest request)
+        {
+            var result = await _flaskService.AddSampledFileAsync(request.FileName, AdminApiKeyFromRequest);
+            return ProxyJson(result.StatusCode, result.Body);
+        }
+
+        [HttpDelete("sampled-files/{fileName}")]
+        public async Task<IActionResult> RemoveSampledFile(string fileName)
+        {
+            var result = await _flaskService.RemoveSampledFileAsync(fileName, AdminApiKeyFromRequest);
+            return ProxyJson(result.StatusCode, result.Body);
+        }
+
         [HttpGet("pending-modifications")]
         public async Task<IActionResult> GetPendingModifications()
         {
