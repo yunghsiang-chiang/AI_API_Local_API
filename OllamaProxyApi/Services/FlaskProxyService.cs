@@ -10,7 +10,7 @@ namespace OllamaProxyApi.Services
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly ILogger<FlaskProxyService> _logger;
-        private const int MAX_TOP_K = 10;
+        private const int MAX_TOP_K = 30;
         private const string AdminApiKeyHeader = "X-Admin-API-Key";
 
         public FlaskProxyService(HttpClient httpClient, IConfiguration configuration, ILogger<FlaskProxyService> logger)
@@ -101,6 +101,32 @@ namespace OllamaProxyApi.Services
         public async Task<(HttpStatusCode StatusCode, string Body)> GetSourceFilesAsync(string? adminApiKey = null)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/source-files");
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
+        }
+
+
+        public async Task<(HttpStatusCode StatusCode, string Body)> GetSampledFilesAsync(string? adminApiKey = null)
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/admin/sampled-files");
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
+        }
+
+        public async Task<(HttpStatusCode StatusCode, string Body)> AddSampledFileAsync(string fileName, string? adminApiKey = null)
+        {
+            var payload = new { file_name = fileName };
+            var json = JsonConvert.SerializeObject(payload);
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{BaseUrl}/admin/sampled-files")
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json"),
+            };
+
+            return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
+        }
+
+        public async Task<(HttpStatusCode StatusCode, string Body)> RemoveSampledFileAsync(string fileName, string? adminApiKey = null)
+        {
+            var encodedFileName = Uri.EscapeDataString(fileName);
+            using var request = new HttpRequestMessage(HttpMethod.Delete, $"{BaseUrl}/admin/sampled-files/{encodedFileName}");
             return await SendAsync(request, requireAdminApiKey: true, adminApiKey: adminApiKey);
         }
 
